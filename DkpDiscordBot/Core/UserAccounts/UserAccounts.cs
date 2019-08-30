@@ -69,6 +69,7 @@ namespace DkpDiscordBot.Core.UserAccounts
             var account = accounts.Where(x => x.UserID == user.Id).FirstOrDefault();
             accounts.Remove(account);
             SaveAccounts();
+
         }
     }
 }
