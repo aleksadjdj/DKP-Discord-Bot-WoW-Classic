@@ -11,6 +11,7 @@ https://discordapp.com/oauth2/authorize?client_id=CLIENT_ID&scope=bot&permission
 Select server  
 
 Go to Bot menu, copy Token (for config.json file)  
+
 --------------------------------------
 **Step Two** COMPILE PROGRAM, ADD THIS LINE TO CONFIG FILE:  
 add to config.json  
@@ -25,6 +26,7 @@ add to config.json
 }  
 
 account.json is file where data about players are stored  
+
 -------------------------------------  
 
 **Step Three** Create "Raid Leader" and "In Raid" role 
