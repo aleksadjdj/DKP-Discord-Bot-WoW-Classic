@@ -10,7 +10,8 @@ replace client id:
 https://discordapp.com/oauth2/authorize?client_id=CLIENT_ID&scope=bot&permissions=1
 select server  
 
-Go to Bot menu and copy Token (for config file)  
+Go to Bot menu and copy Token (for config.json file)  
+
 
 --------------------------------------
 **Step Two** COMPILE PROGRAM, ADD THIS LINE TO CONFIG FILE:
@@ -25,6 +26,7 @@ add to config.json
   "auctionTime": 25 // auction time in seconds
 }
 
+account.json is file where data about players are stored
 -------------------------------------
 
 **Step Three** Create "Raid Leader" and "In Raid" role 
