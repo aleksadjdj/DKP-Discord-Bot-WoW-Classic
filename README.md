@@ -1,16 +1,16 @@
 #dkp-bot
 
-**Step One** Before you compile program, first create bot(application)  |
+**Step One** Before you compile program, first create bot(application)  
 https://discordapp.com/developers/applications/
 
-Go to Bot settings (add bot)  |
+Go to Bot settings (add bot) 
 
-Copy Client ID in General Inforamation  |
-replace client id:  |
+Copy Client ID in General Inforamation  
+replace client id:  
 https://discordapp.com/oauth2/authorize?client_id=CLIENT_ID&scope=bot&permissions=1
-select server  |
+select server  
 
-Go to Bot menu and copy Token (for config file)  |
+Go to Bot menu and copy Token (for config file)  
 
 --------------------------------------
 **Step Two** COMPILE PROGRAM, ADD THIS LINE TO CONFIG FILE:
@@ -27,10 +27,10 @@ add to config.json
 
 -------------------------------------
 
-**Step Three** Create "Raid Leader" and "In Raid" role |
-use "In Raid" role while you are in raid (for all players inc lider) |
+**Step Three** Create "Raid Leader" and "In Raid" role 
+use "In Raid" role while you are in raid (for all players inc lider) 
 
-in Discord type "!help" for help  |
+in Discord type "!help" for help  
 
 ---
 ![discord-preview](https://raw.githubusercontent.com/ludakludi/DKP-Discord-Bot-WoW-Classic/master/dkp-bot-prw.png)
