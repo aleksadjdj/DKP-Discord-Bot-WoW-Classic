@@ -32,6 +32,9 @@ use "In Raid" role while you are in raid (for all players inc lider)
 
 in Discord type "!help" for help  
 
+hope you like it... 
+if you have any suggestion, send me feedback
+
 ---
 ![discord-preview](https://raw.githubusercontent.com/ludakludi/DKP-Discord-Bot-WoW-Classic/master/dkp-bot-prw.png)
 ---
