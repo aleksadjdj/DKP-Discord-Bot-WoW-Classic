@@ -7,6 +7,8 @@ using System.Text.RegularExpressions;
 
 namespace DkpDiscordBot.Modules
 {
+
+    // NEED TO FIX THIS CLASS 
     public class HTMLGrabber
     {
         //https://wow.gamepedia.com/Quality
