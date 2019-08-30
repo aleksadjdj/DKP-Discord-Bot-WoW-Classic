@@ -1,0 +1,5 @@
+{
+  "TEST": "hello world!",
+  "WELCOME_&NAME_&BOTNAME": "Welcome {0}, bot name {1}",
+  "SECRET" :  "qwerty"
+}
