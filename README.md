@@ -11,6 +11,7 @@ https://discordapp.com/oauth2/authorize?client_id=CLIENT_ID&scope=bot&permission
 select server
 
 Go to Bot menu and copy Token (for config file)
+
 --------------------------------------
 **Step Two** COMPILE PROGRAM, ADD THIS LINE TO CONFIG FILE:
 add to config.json
