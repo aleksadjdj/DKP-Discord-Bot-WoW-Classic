@@ -32,7 +32,7 @@ use "In Raid" role while you are in raid
 in Discord type "!help" for help
 
 ---
-![discord-preview](https://raw.githubusercontent.com/softban/nodkp/master/setup/discord-preview.png)
+![discord-preview](https://raw.githubusercontent.com/ludakludi/DKP-Discord-Bot-WoW-Classic/master/dkp-bot-prw.png)
 ---
 
 
