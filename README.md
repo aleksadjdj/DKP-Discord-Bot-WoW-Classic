@@ -29,12 +29,12 @@ account.json is file where data about players are stored
 
 -------------------------------------  
 
-**Step Three** Create "Raid Leader" and "In Raid" role 
-use "In Raid" role while you are in raid (for all players inc lider)  
+**Step Three** Create "Raid Leader" and "In Raid" role  
+use "In Raid" role while you are in raid (for all players, inc. leader)  
 in Discord type "!help" for help  
 
 hope you like it...  
-if you have any suggestion, send me feedback  
+if you have any suggestion, send me some feedback  
 
 ---
 ![discord-preview](https://raw.githubusercontent.com/ludakludi/DKP-Discord-Bot-WoW-Classic/master/dkp-bot-prw.png)
