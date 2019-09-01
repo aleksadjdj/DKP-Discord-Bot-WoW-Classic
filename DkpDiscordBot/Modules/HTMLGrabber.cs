@@ -142,6 +142,37 @@ namespace DkpDiscordBot.Modules
                     continue;
                 }
 
+
+                // format weapon/armor type in same line 
+                List<string> typeList = new List<string>()
+                {
+                    "One-hand", "Main Hand",  "Two-hand", "Ranged", "Off Hand", "Chest", "Feet", "Hands", "Head", "Legs", "Shoulder", "Waist", "Wrist",
+                };
+
+                foreach (var item in typeList)
+                {
+                    if (list[i].Contains(item))
+                    {
+                        sb.Append($"<b class=\"b1\">{list[i]} {list[i + 1]}</b><br />");
+                        i += 2;
+                        continue;
+                    }
+
+                }
+
+                // ex 155 - 233 Damage (next line is speed 3.60)
+                // we need to format that in same line
+                char firstChar = (list[i])[0];
+                if (Char.IsDigit(firstChar))
+                {
+                    sb.Append($"<b class=\"b1\">{list[i]}  {list[i + 1]}</b><br />");
+                    i += 2;
+                    continue;
+                }
+
+
+
+
                 // rest of text is white color
                 sb.Append($"<a class=\"b1\">{ list[i] }</a><br />");
 
