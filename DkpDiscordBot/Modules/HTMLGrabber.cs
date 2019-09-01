@@ -90,7 +90,7 @@ namespace DkpDiscordBot.Modules
             Height = 25;
             var sb = new StringBuilder();
 
-            sb.Append("<table border=\"2\"><tr><th align=\"left\">");
+            sb.Append("<table  cellpadding=\"6\" border=\"2\"><tr><th align=\"left\">");
 
             for (int i = 0; i < list.Count; i++)
             {
@@ -111,7 +111,7 @@ namespace DkpDiscordBot.Modules
 
                 if (list[i].Equals("Equip:") || list[i].Equals("Use:") || list[i].Equals("Chance on hit:")) // ih have use or equip add green color
                 {
-                    sb.Append($"<a class=\"b2\">{ list[i] }{ list[i + 1] }</a><br />");
+                    sb.Append($"<a class=\"b2\">{ list[i] } { list[i + 1] }</a><br />");
                     i++;
                     continue;
                 }
@@ -141,21 +141,6 @@ namespace DkpDiscordBot.Modules
                     sb.Append($"<a class=\"b7\">{ list[i] }</a><br />");
                     continue;
                 }
-
-                if (i == 3) // hand and  weapon tipe in same line format
-                {
-                    sb.Append($"<b class=\"b1\">{list[i]} {list[i + 1]}</b><br />");
-                    i++;
-                    continue;
-                }
-
-                if (i == 5) // dmg and speed in same line format
-                {
-                    sb.Append($"<b class=\"b1\">{list[i]} - {list[i + 1]}</b><br />");
-                    i++;
-                    continue;
-                }
-
 
                 // rest of text is white color
                 sb.Append($"<a class=\"b1\">{ list[i] }</a><br />");
