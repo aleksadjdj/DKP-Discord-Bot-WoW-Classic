@@ -7,15 +7,12 @@ using System.Text.RegularExpressions;
 
 namespace DkpDiscordBot.Modules
 {
-
     // NEED TO FIX THIS CLASS 
     public class HTMLGrabber
     {
         //https://wow.gamepedia.com/Quality
         private static ItemColor itemColor;
-
-        public static int Height;
-
+        public static int ImgHeight;
 
         private enum ItemColor
         {
@@ -56,11 +53,49 @@ namespace DkpDiscordBot.Modules
 
             var target = lines.Where(x => x.Contains(targetLinePattern)).FirstOrDefault();
 
+
+            if (target == null)
+            {
+                var regexPattern = "g_items;_[";
+                int index = -1;
+                string htmlLine = "";
+                StringBuilder sb = new StringBuilder();
+                foreach (var line in lines)
+                {
+                    if (line.Contains(regexPattern))
+                    {
+                        htmlLine = line;
+                        index = line.IndexOf(regexPattern);
+                        break;
+
+
+                    }
+                }
+
+                index += regexPattern.Length;
+                char c = htmlLine[index];
+                while (Char.IsDigit(c))
+                {
+                    sb.Append(c);
+                    index++;
+                    c = htmlLine[index];
+                }
+
+                //try again if there are more same items ... just give us 1st result from db 
+                Int32.TryParse(sb.ToString(), out int resultItemNumber);
+                html = GetData("https://classicdb.ch/?item=" + resultItemNumber);
+                string[] lines2 = html.Replace("\r", "").Split('\n');
+                target = lines2.Where(x => x.Contains(targetLinePattern)).FirstOrDefault();
+            }
+
+
             if (target != null)
             {
+
+
                 target = target.Trim();
                 var selectColorIndex = target.Substring(targetLinePattern.Length, 1);
-                System.Console.WriteLine("Selected Item Color:" + selectColorIndex);
+                //System.Console.WriteLine("Selected Item Color:" + selectColorIndex);
                 Int32.TryParse(selectColorIndex, out int colorIndex);
                 itemColor = (ItemColor)colorIndex;
 
@@ -80,21 +115,21 @@ namespace DkpDiscordBot.Modules
             }
             else
             {
-                Height = 40;
+                ImgHeight = 40;
                 return "<style>.b2{color: #1eff00;}</style><a class=\"b2\">NO ITEM DATA<a/>";
             }
         }
 
         private static string FormatToHTML(List<string> list)
         {
-            Height = 25;
+            ImgHeight = 25;
             var sb = new StringBuilder();
 
             sb.Append("<table  cellpadding=\"6\" border=\"2\"><tr><th align=\"left\">");
 
             for (int i = 0; i < list.Count; i++)
             {
-                Height += 22;
+                ImgHeight += 22;
 
                 if (i == 0) // add item color header
                 {
@@ -109,7 +144,8 @@ namespace DkpDiscordBot.Modules
                     continue;
                 }
 
-                if (list[i].Equals("Equip:") || list[i].Equals("Use:") || list[i].Equals("Chance on hit:")) // ih have use or equip add green color
+                // use or equip set green color
+                if (list[i].Equals("Equip:") || list[i].Equals("Use:") || list[i].Equals("Chance on hit:"))
                 {
                     sb.Append($"<a class=\"b2\">{ list[i] } { list[i + 1] }</a><br />");
                     i++;
@@ -157,7 +193,6 @@ namespace DkpDiscordBot.Modules
                         i += 2;
                         continue;
                     }
-
                 }
 
                 // ex 155 - 233 Damage (next line is speed 3.60)
@@ -170,12 +205,8 @@ namespace DkpDiscordBot.Modules
                     continue;
                 }
 
-
-
-
-                // rest of text is white color
+                // rest of text will be white color
                 sb.Append($"<a class=\"b1\">{ list[i] }</a><br />");
-
 
             }
 
@@ -193,11 +224,22 @@ namespace DkpDiscordBot.Modules
             sb.Append(".b6 {color: #e6cc80;}");
             sb.Append(".b7 {color: #ffd100;}");
             sb.Append(".b8 {color: #ff0000;}");
-            sb.Append("</style>");
 
+
+            sb.Append(".c0 {color: #FF7D0A;}"); // druid color
+            sb.Append(".c1 {color: #ABD473;}"); // hunter color
+            sb.Append(".c2 {color: #40C7EB;}"); // mage color
+            sb.Append(".c3 {color: #F58CBA;}"); // paladin color
+            sb.Append(".c4 {color: #FFFFFF;}"); // priest color
+            sb.Append(".c5 {color: #FFF569;}"); // rogue color
+            sb.Append(".c6 {color: #0070DE;}"); // shaman color
+            sb.Append(".c7 {color: #8787ED;}"); // warlock color
+            sb.Append(".c8 {color: #C79C6E;}"); // warrior color
+
+
+            sb.Append("</style>");
 
             return sb.ToString();
         }
-
     }
 }
