@@ -263,7 +263,6 @@ namespace DkpDiscordBot.Modules
 
                 // rest of text will be white color
                 sb.Append($"<a class=\"b1\">{ list[i] }</a><br />");
-
             }
 
             sb.Append("</th></tr></table>");
