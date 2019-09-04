@@ -25,6 +25,21 @@ namespace DkpDiscordBot.Modules
             Artifact = 6
         }
 
+        private enum ClassColor
+        {
+            Error = -1,
+            Druid = 0,
+            Hunter = 1,
+            Mage = 2,
+            Paladin = 3,
+            Priest = 4,
+            Rogue = 5,
+            Shaman = 6,
+            Warlock = 7,
+            Warrior = 8,
+
+        }
+
         private static string GetData(string url)
         {
             string htmlCode = "";
@@ -152,6 +167,47 @@ namespace DkpDiscordBot.Modules
                     continue;
                 }
 
+                if (list[i].Equals("Classes:"))
+                {
+                    string className = list[i + 1].Trim();
+                    ClassColor cs = ClassColor.Error;
+
+                    switch (className)
+                    {
+                        case "Druid":
+                            cs = ClassColor.Druid;
+                            break;
+                        case "Hunter":
+                            cs = ClassColor.Hunter;
+                            break;
+                        case "Mage":
+                            cs = ClassColor.Mage;
+                            break;
+                        case "Paladin":
+                            cs = ClassColor.Paladin;
+                            break;
+                        case "Priest":
+                            cs = ClassColor.Paladin;
+                            break;
+                        case "Rogue":
+                            cs = ClassColor.Rogue;
+                            break;
+                        case "Shaman":
+                            cs = ClassColor.Shaman;
+                            break;
+                        case "Warlock":
+                            cs = ClassColor.Warlock;
+                            break;
+                        case "Warrior":
+                            cs = ClassColor.Warrior;
+                            break;
+                    }
+
+                    sb.Append($"<a class=\"b1\">{ list[i] }</a> <a class=\"b{(int)cs}\">{ list[i + 1] }</a><br />");
+                    i++;
+                    continue;
+                }
+
                 if (list[i].Contains("No description:"))
                 {
                     sb.Append($"<a class=\"b2\">{ list[i] }</a><br />");
@@ -198,7 +254,7 @@ namespace DkpDiscordBot.Modules
                 // ex 155 - 233 Damage (next line is speed 3.60)
                 // we need to format that in same line
                 char firstChar = (list[i])[0];
-                if (Char.IsDigit(firstChar))
+                if (Char.IsDigit(firstChar) && !list[i].Contains("Armor"))
                 {
                     sb.Append($"<b class=\"b1\">{list[i]}  {list[i + 1]}</b><br />");
                     i += 2;
