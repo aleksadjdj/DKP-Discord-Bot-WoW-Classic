@@ -6,7 +6,7 @@ https://discordapp.com/developers/applications/
 Go to Bot settings (add bot) 
 
 Copy Client ID in General Inforamation  
-Replace CLIENT_ID  
+Replace CLIENT_ID in link belowe
 https://discordapp.com/oauth2/authorize?client_id=CLIENT_ID&scope=bot&permissions=1  
 Select server  
 
@@ -14,7 +14,7 @@ Go to Bot menu, copy Token (for config.json file)
 
 --------------------------------------
 **Step Two** COMPILE PROGRAM, ADD THIS LINE TO CONFIG FILE:  
-add to config.json  
+add to config.json  (replace TOKEN) save it
 
 {  
   "token": "TOKEN",  
@@ -40,4 +40,7 @@ if you have any suggestion, send me some feedback
 ![discord-preview](https://raw.githubusercontent.com/ludakludi/DKP-Discord-Bot-WoW-Classic/master/dkp-bot-prw.png)
 ---
 
+---
+![discord-preview](https://raw.githubusercontent.com/ludakludi/DKP-Discord-Bot-WoW-Classic/master/auctionPrw.png)
+---
 
