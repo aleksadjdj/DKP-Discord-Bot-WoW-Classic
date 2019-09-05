@@ -241,11 +241,11 @@ namespace DkpDiscordBot.Modules
             _auctionItemName = arg;
 
 
-            string html = HTMLGrabber.GetItemInfo(_auctionItemName);
+            string html = ItemGrabber.GetItemInfo(_auctionItemName);
             var converter = new HtmlToImageConverter
             {
                 Width = 340,
-                Height = HTMLGrabber.ImgHeight
+                Height = ItemGrabber.ImgHeight
             };
             var jpgBytes = converter.GenerateImage(html, NReco.ImageGenerator.ImageFormat.Jpeg);
 

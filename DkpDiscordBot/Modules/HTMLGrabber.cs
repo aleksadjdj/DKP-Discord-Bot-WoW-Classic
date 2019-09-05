@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 namespace DkpDiscordBot.Modules
 {
     // NEED TO FIX THIS CLASS 
-    public class HTMLGrabber
+    public class ItemGrabber
     {
         //https://wow.gamepedia.com/Quality
         private static ItemColor itemColor;
@@ -71,23 +71,21 @@ namespace DkpDiscordBot.Modules
 
             if (target == null)
             {
-                var regexPattern = "g_items;_[";
+                var targetSecondPattern = "g_items;_[";
                 int index = -1;
                 string htmlLine = "";
                 StringBuilder sb = new StringBuilder();
                 foreach (var line in lines)
                 {
-                    if (line.Contains(regexPattern))
+                    if (line.Contains(targetSecondPattern))
                     {
                         htmlLine = line;
-                        index = line.IndexOf(regexPattern);
+                        index = line.IndexOf(targetSecondPattern);
                         break;
-
-
                     }
                 }
 
-                index += regexPattern.Length;
+                index += targetSecondPattern.Length;
                 char c = htmlLine[index];
                 while (Char.IsDigit(c))
                 {
