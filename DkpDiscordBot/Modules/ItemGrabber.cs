@@ -122,7 +122,6 @@ namespace DkpDiscordBot.Modules
                 {
                     if (item != "")
                         result.Add(item.Trim());
-
                 }
                 return FormatToHTML(result);
             }
@@ -133,13 +132,20 @@ namespace DkpDiscordBot.Modules
             }
         }
 
+        //private static bool LengthCheck(int strLength)
+        //{
+        //    if (strLength > 40)
+        //        return true;
+        //    return false;
+        //}
 
-        private static bool LengthCheck(int strLengt)
+        private static int TextLengthCheck(int strLength)
         {
-            if (strLengt > 40)
-                return true;
+            if (strLength > 120 && strLength < 160) return Height * 3;
+            if (strLength > 80 && strLength <= 120) return Height * 2;
+            if (strLength >= 40 && strLength <= 80) return Height;
 
-            return false;
+            return 0;
         }
 
         private static string FormatToHTML(List<string> list)
@@ -150,30 +156,27 @@ namespace DkpDiscordBot.Modules
             bool signalFirstSet = true;
             sb.Append("<table cellpadding=\"6\" border=\"1\"><tr><td align=\"left\"><p class=\"sansserif\">");
 
+            // item name
+            sb.Append($"<b class=\"b{(int)itemColor}\">{list[0]}</b><br />");
+            itemName = list[0].Substring(0, list[0].Trim().IndexOf(" "));
+            ImgHeight += Height;
 
-            for (int i = 0; i < list.Count; i++)
+            for (int i = 1; i < list.Count; i++)
             {
                 ImgHeight += Height;
-
-                if (i == 0) // add item color header
-                {
-                    sb.Append($"<b class=\"b{(int)itemColor}\">{list[0]}</b><br />");
-                    itemName = list[0].Substring(0, list[0].IndexOf(" "));
-                    continue;
-                }
 
                 string s = list[i].Trim();
                 if (s[0] == '+') // set white color to stats 
                 {
                     sb.Append($"<a class=\"b1\">{ list[i] }</a><br />");
-                    if (LengthCheck(list[i].Length)) ImgHeight += Height;
+                    ImgHeight += TextLengthCheck(TextLengthCheck(list[i].Length));
                     continue;
                 }
 
                 if (list[i].Contains("Set:")) // set white color to stats 
                 {
                     sb.Append($"<a class=\"b0\">{ list[i] } { list[i + 1] }</a><br />");
-                    if (LengthCheck(list[i].Length + list[i + 1].Length)) ImgHeight += Height;
+                    ImgHeight += TextLengthCheck(TextLengthCheck(list[i].Length + list[i + 1].Length));
                     i++;
                     continue;
                 }
@@ -182,7 +185,7 @@ namespace DkpDiscordBot.Modules
                 if (list[i].Equals("Equip:") || list[i].Equals("Use:") || list[i].Equals("Chance on hit:"))
                 {
                     sb.Append($"<a class=\"b2\">{ list[i] } { list[i + 1] }</a><br />");
-                    if (LengthCheck(list[i].Length + list[i + 1].Length)) ImgHeight += Height;
+                    ImgHeight += TextLengthCheck(TextLengthCheck(list[i].Length + list[i + 1].Length));
                     i++;
 
                     continue;
@@ -225,7 +228,7 @@ namespace DkpDiscordBot.Modules
                     }
 
                     sb.Append($"<a class=\"b1\">{ list[i] }</a> <a class=\"c{(int)cs}\">{ list[i + 1] }</a><br />");
-                    if (LengthCheck(list[i].Length + list[i + 1].Length)) ImgHeight += Height;
+                    ImgHeight += TextLengthCheck(TextLengthCheck(list[i].Length + list[i + 1].Length));
 
                     i++;
 
@@ -235,83 +238,95 @@ namespace DkpDiscordBot.Modules
                 if (list[i].Contains("No description:"))
                 {
                     sb.Append($"<a class=\"b2\">{ list[i] }</a><br />");
-                    if (LengthCheck(list[i].Length)) ImgHeight += Height;
+                    ImgHeight += TextLengthCheck(TextLengthCheck(list[i].Length));
                     continue;
                 }
 
                 if (list[i].Contains("Requires Level")) // set requires to red color
                 {
                     sb.Append($"<a class=\"b1\">{ list[i] }</a><br />");
-                    if (LengthCheck(list[i].Length)) ImgHeight += Height;
+                    ImgHeight += TextLengthCheck(TextLengthCheck(list[i].Length));
                     continue;
                 }
 
                 if (list[i].Contains("Requires")) // set requires to red color
                 {
                     sb.Append($"<a class=\"b8\">{ list[i] }</a><br />");
-                    if (LengthCheck(list[i].Length)) ImgHeight += Height;
+                    ImgHeight += TextLengthCheck(TextLengthCheck(list[i].Length));
                     continue;
                 }
 
                 if (Regex.IsMatch(list[i], "^\"(.+)\"$")) // if line have "" set text to golden color
                 {
                     sb.Append($"<a class=\"b7\">{ list[i] }</a><br />");
-                    if (LengthCheck(list[i].Length)) ImgHeight += Height;
+                    ImgHeight += TextLengthCheck(TextLengthCheck(list[i].Length));
                     continue;
                 }
 
                 // format weapon/armor type in same line 
-                var typeList = new List<string>()
+
+
+                if (signalFirstSet == true)
+                {
+                    var typeList = new List<string>()
                 {
                     "One-hand", "Main Hand",  "Two-hand", "Ranged", "Off Hand", "Chest", "Feet", "Hands", "Head", "Legs", "Shoulder", "Waist", "Wrist",
                 };
-                foreach (var item in typeList)
-                {
-                    if (list[i].Contains(item))
+                    foreach (var item in typeList)
                     {
-                        sb.Append($"<a class=\"b1\">{list[i]} {list[i + 1]}</a><br />");
-                        if (LengthCheck(list[i].Length + list[i + 1].Length)) ImgHeight += Height;
-                        i += 2;
+                        if (list[i].Contains(item))
+                        {
+                            sb.Append($"<a class=\"b1\">{list[i]} {list[i + 1]}</a><br />");
+                            ImgHeight += TextLengthCheck(TextLengthCheck(list[i].Length + list[i + 1].Length));
+                            i += 2;
 
 
-                        continue;
+                            continue;
+                        }
                     }
                 }
 
-                // ex 155 - 233 Damage (next line is speed 3.60)
+
+                // 155 - 233 Damage (next line is speed 3.60) ex
                 // we need to format that in same line
                 char firstChar = (list[i])[0];
                 if (Char.IsDigit(firstChar) && !list[i].Contains("Armor"))
                 {
                     sb.Append($"<a class=\"b1\">{list[i]}  {list[i + 1]}</a><br />");
-                    if (LengthCheck(list[i].Length + list[i + 1].Length)) ImgHeight += Height;
+                    ImgHeight += TextLengthCheck(TextLengthCheck(list[i].Length + list[i + 1].Length));
                     i++;
                     continue;
                 }
 
+                Console.WriteLine(list[i]);
+
                 if (list[i].Contains(itemName))
                 {
-                    if (signalFirstSet)
+                    if (signalFirstSet == true)
                     {
-                        sb.Append($"<a class=\"b0\">{ list[i + 1] + " " + list[i] }</a><br />");
-                        if (LengthCheck(list[i].Length + list[i + 1].Length)) ImgHeight += Height;
+                        ImgHeight += Height * 2;
+                        sb.Append($"<br /><b class=\"b7\">{ list[i] + " " + list[i + 1] }</b><br />");
+                        ImgHeight += TextLengthCheck(TextLengthCheck(list[i].Length + list[i + 1].Length));
                         i++;
                         signalFirstSet = false;
                         continue;
                     }
+                }
 
+                if (signalFirstSet == false)
+                {
                     sb.Append($"<a class=\"b0\">{ "&nbsp;&nbsp;" + list[i] }</a><br />");
-                    if (LengthCheck(list[i].Length)) ImgHeight += Height;
-
+                    ImgHeight += TextLengthCheck(TextLengthCheck(list[i].Length));
                     continue;
                 }
 
                 // rest of text will be white color
                 sb.Append($"<a class=\"b1\">{ list[i] }</a><br />");
+                ImgHeight += TextLengthCheck(TextLengthCheck(list[i].Length));
             }
 
-            ImgHeight += Height;
-
+            ImgHeight += Height * 2;
+            Console.WriteLine(ImgHeight);
             sb.Append("</p></td></tr></table>");
 
             sb.Append("<style>");
