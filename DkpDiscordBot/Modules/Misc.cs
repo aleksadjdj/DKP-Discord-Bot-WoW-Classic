@@ -245,7 +245,7 @@ namespace DkpDiscordBot.Modules
             var converter = new HtmlToImageConverter
             {
                 Width = 340,
-                Height = ItemGrabber.ImgHeight
+
             };
             var jpgBytes = converter.GenerateImage(html, NReco.ImageGenerator.ImageFormat.Jpeg);
 

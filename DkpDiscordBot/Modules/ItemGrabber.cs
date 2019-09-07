@@ -12,8 +12,6 @@ namespace DkpDiscordBot.Modules
     {
         //https://wow.gamepedia.com/Quality
         private static ItemColor itemColor;
-        public static int ImgHeight;
-        private const int Height = 18;
 
         private enum ItemColor
         {
@@ -127,56 +125,36 @@ namespace DkpDiscordBot.Modules
             }
             else
             {
-                ImgHeight = 40;
                 return "<style>.b2{color: #1eff00;}</style><a class=\"b2\">Can't load item!<a/>";
             }
         }
 
-        //private static bool LengthCheck(int strLength)
-        //{
-        //    if (strLength > 40)
-        //        return true;
-        //    return false;
-        //}
 
-        private static int TextLengthCheck(int strLength)
-        {
-            if (strLength > 120 && strLength < 160) return Height * 3;
-            if (strLength > 80 && strLength <= 120) return Height * 2;
-            if (strLength >= 40 && strLength <= 80) return Height;
-
-            return 0;
-        }
 
         private static string FormatToHTML(List<string> list)
         {
-            ImgHeight = Height;
             var sb = new StringBuilder();
             string itemName = "";
             bool signalFirstSet = true;
-            sb.Append("<table cellpadding=\"6\" border=\"1\"><tr><td align=\"left\"><p class=\"sansserif\">");
+            sb.AppendLine("<table cellpadding=\"6\" border=\"1\"><tr><td align=\"left\"><p class=\"sansserif\">");
 
             // item name
-            sb.Append($"<b class=\"b{(int)itemColor}\">{list[0]}</b><br />");
+            sb.AppendLine($"<b class=\"b{(int)itemColor}\">{list[0]}</b><br />");
             itemName = list[0].Substring(0, list[0].Trim().IndexOf(" "));
-            ImgHeight += Height;
 
             for (int i = 1; i < list.Count; i++)
             {
-                ImgHeight += Height;
 
                 string s = list[i].Trim();
                 if (s[0] == '+') // set white color to stats 
                 {
-                    sb.Append($"<a class=\"b1\">{ list[i] }</a><br />");
-                    ImgHeight += TextLengthCheck(TextLengthCheck(list[i].Length));
+                    sb.AppendLine($"<a class=\"b1\">{ list[i] }</a><br />");
                     continue;
                 }
 
                 if (list[i].Contains("Set:")) // set white color to stats 
                 {
-                    sb.Append($"<a class=\"b0\">{ list[i] } { list[i + 1] }</a><br />");
-                    ImgHeight += TextLengthCheck(TextLengthCheck(list[i].Length + list[i + 1].Length));
+                    sb.AppendLine($"<a class=\"b0\">{ list[i] } { list[i + 1] }</a><br />");
                     i++;
                     continue;
                 }
@@ -184,10 +162,8 @@ namespace DkpDiscordBot.Modules
                 // use or equip set green color
                 if (list[i].Equals("Equip:") || list[i].Equals("Use:") || list[i].Equals("Chance on hit:"))
                 {
-                    sb.Append($"<a class=\"b2\">{ list[i] } { list[i + 1] }</a><br />");
-                    ImgHeight += TextLengthCheck(TextLengthCheck(list[i].Length + list[i + 1].Length));
+                    sb.AppendLine($"<a class=\"b2\">{ list[i] } { list[i + 1] }</a><br />");
                     i++;
-
                     continue;
                 }
 
@@ -227,9 +203,7 @@ namespace DkpDiscordBot.Modules
                             break;
                     }
 
-                    sb.Append($"<a class=\"b1\">{ list[i] }</a> <a class=\"c{(int)cs}\">{ list[i + 1] }</a><br />");
-                    ImgHeight += TextLengthCheck(TextLengthCheck(list[i].Length + list[i + 1].Length));
-
+                    sb.AppendLine($"<a class=\"b1\">{ list[i] }</a> <a class=\"c{(int)cs}\">{ list[i + 1] }</a><br />");
                     i++;
 
                     continue;
@@ -237,29 +211,25 @@ namespace DkpDiscordBot.Modules
 
                 if (list[i].Contains("No description:"))
                 {
-                    sb.Append($"<a class=\"b2\">{ list[i] }</a><br />");
-                    ImgHeight += TextLengthCheck(TextLengthCheck(list[i].Length));
+                    sb.AppendLine($"<a class=\"b2\">{ list[i] }</a><br />");
                     continue;
                 }
 
                 if (list[i].Contains("Requires Level")) // set requires to red color
                 {
-                    sb.Append($"<a class=\"b1\">{ list[i] }</a><br />");
-                    ImgHeight += TextLengthCheck(TextLengthCheck(list[i].Length));
+                    sb.AppendLine($"<a class=\"b1\">{ list[i] }</a><br />");
                     continue;
                 }
 
                 if (list[i].Contains("Requires")) // set requires to red color
                 {
-                    sb.Append($"<a class=\"b8\">{ list[i] }</a><br />");
-                    ImgHeight += TextLengthCheck(TextLengthCheck(list[i].Length));
+                    sb.AppendLine($"<a class=\"b8\">{ list[i] }</a><br />");
                     continue;
                 }
 
                 if (Regex.IsMatch(list[i], "^\"(.+)\"$")) // if line have "" set text to golden color
                 {
-                    sb.Append($"<a class=\"b7\">{ list[i] }</a><br />");
-                    ImgHeight += TextLengthCheck(TextLengthCheck(list[i].Length));
+                    sb.AppendLine($"<a class=\"b7\">{ list[i] }</a><br />");
                     continue;
                 }
 
@@ -276,11 +246,8 @@ namespace DkpDiscordBot.Modules
                     {
                         if (list[i].Contains(item))
                         {
-                            sb.Append($"<a class=\"b1\">{list[i]} {list[i + 1]}</a><br />");
-                            ImgHeight += TextLengthCheck(TextLengthCheck(list[i].Length + list[i + 1].Length));
+                            sb.AppendLine($"<a class=\"b1\">{list[i]} {list[i + 1]}</a><br />");
                             i += 2;
-
-
                             continue;
                         }
                     }
@@ -292,21 +259,17 @@ namespace DkpDiscordBot.Modules
                 char firstChar = (list[i])[0];
                 if (Char.IsDigit(firstChar) && !list[i].Contains("Armor"))
                 {
-                    sb.Append($"<a class=\"b1\">{list[i]}  {list[i + 1]}</a><br />");
-                    ImgHeight += TextLengthCheck(TextLengthCheck(list[i].Length + list[i + 1].Length));
+                    sb.AppendLine($"<a class=\"b1\">{list[i]}  {list[i + 1]}</a><br />");
                     i++;
                     continue;
                 }
 
-                Console.WriteLine(list[i]);
 
                 if (list[i].Contains(itemName))
                 {
                     if (signalFirstSet == true)
                     {
-                        ImgHeight += Height * 2;
-                        sb.Append($"<br /><b class=\"b7\">{ list[i] + " " + list[i + 1] }</b><br />");
-                        ImgHeight += TextLengthCheck(TextLengthCheck(list[i].Length + list[i + 1].Length));
+                        sb.AppendLine($"<br /><b class=\"b7\">{ list[i] + " " + list[i + 1] }</b><br />");
                         i++;
                         signalFirstSet = false;
                         continue;
@@ -315,44 +278,39 @@ namespace DkpDiscordBot.Modules
 
                 if (signalFirstSet == false)
                 {
-                    sb.Append($"<a class=\"b0\">{ "&nbsp;&nbsp;" + list[i] }</a><br />");
-                    ImgHeight += TextLengthCheck(TextLengthCheck(list[i].Length));
+                    sb.AppendLine($"<a class=\"b0\">{ "&nbsp;&nbsp;" + list[i] }</a><br />");
                     continue;
                 }
 
                 // rest of text will be white color
-                sb.Append($"<a class=\"b1\">{ list[i] }</a><br />");
-                ImgHeight += TextLengthCheck(TextLengthCheck(list[i].Length));
+                sb.AppendLine($"<a class=\"b1\">{ list[i] }</a><br />");
             }
 
-            ImgHeight += Height * 2;
-            Console.WriteLine(ImgHeight);
-            sb.Append("</p></td></tr></table>");
 
-            sb.Append("<style>");
-            sb.Append("body {background-color: #070c21;}");
-            sb.Append("p.sansserif { font-family:Verdana,sans-serif; font-size: 12px; line-height: 17px;}");
+            sb.AppendLine("<style>");
+            sb.AppendLine("body {background-color: #070c21;}");
+            sb.AppendLine("p.sansserif { font-family:Verdana,sans-serif; font-size: 12px; line-height: 17px;}");
 
-            sb.Append(".b0 {color: #9d9d9d;}");
-            sb.Append(".b1 {color: #ffffff;}");
-            sb.Append(".b2 {color: #1eff00;}");
-            sb.Append(".b3 {color: #0070dd;}");
-            sb.Append(".b4 {color: #a335ee;}");
-            sb.Append(".b5 {color: #ff8000;}");
-            sb.Append(".b6 {color: #e6cc80;}");
-            sb.Append(".b7 {color: #ffd100;}");
-            sb.Append(".b8 {color: #ff0000;}");
+            sb.AppendLine(".b0 {color: #9d9d9d;}");
+            sb.AppendLine(".b1 {color: #ffffff;}");
+            sb.AppendLine(".b2 {color: #1eff00;}");
+            sb.AppendLine(".b3 {color: #0070dd;}");
+            sb.AppendLine(".b4 {color: #a335ee;}");
+            sb.AppendLine(".b5 {color: #ff8000;}");
+            sb.AppendLine(".b6 {color: #e6cc80;}");
+            sb.AppendLine(".b7 {color: #ffd100;}");
+            sb.AppendLine(".b8 {color: #ff0000;}");
 
-            sb.Append(".c0 {color: #FF7D0A;}"); // druid color
-            sb.Append(".c1 {color: #ABD473;}"); // hunter color
-            sb.Append(".c2 {color: #40C7EB;}"); // mage color
-            sb.Append(".c3 {color: #F58CBA;}"); // paladin color
-            sb.Append(".c4 {color: #FFFFFF;}"); // priest color
-            sb.Append(".c5 {color: #FFF569;}"); // rogue color
-            sb.Append(".c6 {color: #0070DE;}"); // shaman color
-            sb.Append(".c7 {color: #8787ED;}"); // warlock color
-            sb.Append(".c8 {color: #C79C6E;}"); // warrior color
-            sb.Append("</style>");
+            sb.AppendLine(".c0 {color: #FF7D0A;}"); // druid color
+            sb.AppendLine(".c1 {color: #ABD473;}"); // hunter color
+            sb.AppendLine(".c2 {color: #40C7EB;}"); // mage color
+            sb.AppendLine(".c3 {color: #F58CBA;}"); // paladin color
+            sb.AppendLine(".c4 {color: #FFFFFF;}"); // priest color
+            sb.AppendLine(".c5 {color: #FFF569;}"); // rogue color
+            sb.AppendLine(".c6 {color: #0070DE;}"); // shaman color
+            sb.AppendLine(".c7 {color: #8787ED;}"); // warlock color
+            sb.AppendLine(".c8 {color: #C79C6E;}"); // warrior color
+            sb.AppendLine("</style>");
 
             return sb.ToString();
         }
