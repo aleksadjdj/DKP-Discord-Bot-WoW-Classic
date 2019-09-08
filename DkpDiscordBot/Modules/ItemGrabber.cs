@@ -70,21 +70,21 @@ namespace DkpDiscordBot.Modules
 
             if (target == null)
             {
-                var targetSecondPattern = "g_items;_[";
+                var secondTargetPattern = "g_items;_[";
                 int index = -1;
-                string htmlLine = "";
-                StringBuilder sb = new StringBuilder();
+                string htmlLine = String.Empty;
+                var sb = new StringBuilder();
                 foreach (var line in lines)
                 {
-                    if (line.Contains(targetSecondPattern))
+                    if (line.Contains(secondTargetPattern))
                     {
                         htmlLine = line;
-                        index = line.IndexOf(targetSecondPattern);
+                        index = line.IndexOf(secondTargetPattern);
                         break;
                     }
                 }
 
-                index += targetSecondPattern.Length;
+                index += secondTargetPattern.Length;
                 char c = htmlLine[index];
                 while (Char.IsDigit(c))
                 {
@@ -129,18 +129,27 @@ namespace DkpDiscordBot.Modules
             }
         }
 
-
-
         private static string FormatToHTML(List<string> list)
         {
             var sb = new StringBuilder();
             string itemName = "";
             bool signalFirstSet = true;
+            bool isSetItem = false;
             sb.AppendLine("<table cellpadding=\"6\" border=\"1\"><tr><td align=\"left\"><p class=\"sansserif\">");
 
-            // item name
+            bool firstBenefit = true;
+
+
+            // item name header
             sb.AppendLine($"<b class=\"b{(int)itemColor}\">{list[0]}</b><br />");
             itemName = list[0].Substring(0, list[0].Trim().IndexOf(" "));
+
+            foreach (var item in list)
+            {
+                if (item.Trim().Contains("(0/"))
+                    isSetItem = true;
+            }
+
 
             for (int i = 1; i < list.Count; i++)
             {
@@ -152,9 +161,22 @@ namespace DkpDiscordBot.Modules
                     continue;
                 }
 
-                if (list[i].Contains("Set:")) // set white color to stats 
+
+                if (list[i].Contains("Binds when picked up") || list[i].Contains("Binds when equipped") || list[i].Contains("Unique") ||
+                     list[i].Contains("Durability") || list[i].Contains("Block") || list[i].Contains("Requires Level")) // set white color to stats 
                 {
-                    sb.AppendLine($"<a class=\"b0\">{ list[i] } { list[i + 1] }</a><br />");
+                    sb.AppendLine($"<a class=\"b1\">{ list[i] }</a><br />");
+                    continue;
+                }
+
+                if (list[i].Contains(") Set:")) // set white color to stats 
+                {
+                    if (firstBenefit)
+                    {
+                        firstBenefit = false;
+                        sb.Append("<br />");
+                    }
+                    sb.AppendLine($"<a class=\"b0\">{ list[i] }&nbsp;{ list[i + 1] }</a><br />");
                     i++;
                     continue;
                 }
@@ -162,7 +184,7 @@ namespace DkpDiscordBot.Modules
                 // use or equip set green color
                 if (list[i].Equals("Equip:") || list[i].Equals("Use:") || list[i].Equals("Chance on hit:"))
                 {
-                    sb.AppendLine($"<a class=\"b2\">{ list[i] } { list[i + 1] }</a><br />");
+                    sb.AppendLine($"<a class=\"b2\">{ list[i] }&nbsp;{ list[i + 1] }</a><br />");
                     i++;
                     continue;
                 }
@@ -203,7 +225,7 @@ namespace DkpDiscordBot.Modules
                             break;
                     }
 
-                    sb.AppendLine($"<a class=\"b1\">{ list[i] }</a> <a class=\"c{(int)cs}\">{ list[i + 1] }</a><br />");
+                    sb.AppendLine($"<a class=\"b1\">{ list[i] }</a>&nbsp;<a class=\"c{(int)cs}\">{ list[i + 1] }</a><br />");
                     i++;
 
                     continue;
@@ -234,72 +256,70 @@ namespace DkpDiscordBot.Modules
                 }
 
                 // format weapon/armor type in same line 
-
-
                 if (signalFirstSet == true)
                 {
                     var typeList = new List<string>()
-                {
-                    "One-hand", "Main Hand",  "Two-hand", "Ranged", "Off Hand", "Chest", "Feet", "Hands", "Head", "Legs", "Shoulder", "Waist", "Wrist",
-                };
+                    {
+                        "One-hand", "Main Hand",  "Two-hand", "Ranged", "Off Hand", "Chest", "Feet", "Hands", "Head", "Legs", "Shoulder", "Waist", "Wrist",
+                    };
                     foreach (var item in typeList)
                     {
                         if (list[i].Contains(item))
                         {
-                            sb.AppendLine($"<a class=\"b1\">{list[i]} {list[i + 1]}</a><br />");
+                            sb.AppendLine($"<a class=\"b1\">{list[i]} &nbsp; {list[i + 1]}</a><br />");
                             i += 2;
                             continue;
                         }
                     }
                 }
 
-
                 // 155 - 233 Damage (next line is speed 3.60) ex
                 // we need to format that in same line
                 char firstChar = (list[i])[0];
                 if (Char.IsDigit(firstChar) && !list[i].Contains("Armor"))
                 {
-                    sb.AppendLine($"<a class=\"b1\">{list[i]}  {list[i + 1]}</a><br />");
+                    sb.AppendLine($"<a class=\"b1\">{list[i]} &nbsp; {list[i + 1]}</a><br />");
                     i++;
                     continue;
                 }
 
-
-                if (list[i].Contains(itemName))
+                if (isSetItem)
                 {
-                    if (signalFirstSet == true)
+                    if (list[i].Contains("(0/"))
                     {
-                        sb.AppendLine($"<br /><b class=\"b7\">{ list[i] + " " + list[i + 1] }</b><br />");
-                        i++;
+                        sb.Replace(list[i - 1], "");
+                        sb.AppendLine($"<a class=\"b7\">{ list[i - 1] + "&nbsp;" + list[i] }</a><br />");
                         signalFirstSet = false;
+                        continue;
+                    }
+
+                    if (signalFirstSet == false)
+                    {
+                        sb.AppendLine($"<a class=\"b0\">{ "&nbsp;&nbsp;" + list[i] }</a><br />");
                         continue;
                     }
                 }
 
-                if (signalFirstSet == false)
-                {
-                    sb.AppendLine($"<a class=\"b0\">{ "&nbsp;&nbsp;" + list[i] }</a><br />");
-                    continue;
-                }
+
 
                 // rest of text will be white color
                 sb.AppendLine($"<a class=\"b1\">{ list[i] }</a><br />");
             }
 
-
             sb.AppendLine("<style>");
             sb.AppendLine("body {background-color: #070c21;}");
             sb.AppendLine("p.sansserif { font-family:Verdana,sans-serif; font-size: 12px; line-height: 17px;}");
 
-            sb.AppendLine(".b0 {color: #9d9d9d;}");
-            sb.AppendLine(".b1 {color: #ffffff;}");
-            sb.AppendLine(".b2 {color: #1eff00;}");
-            sb.AppendLine(".b3 {color: #0070dd;}");
-            sb.AppendLine(".b4 {color: #a335ee;}");
-            sb.AppendLine(".b5 {color: #ff8000;}");
-            sb.AppendLine(".b6 {color: #e6cc80;}");
-            sb.AppendLine(".b7 {color: #ffd100;}");
-            sb.AppendLine(".b8 {color: #ff0000;}");
+            sb.AppendLine(".b0 {color: #9d9d9d;}"); // poor
+            sb.AppendLine(".b1 {color: #ffffff;}"); // common
+            sb.AppendLine(".b2 {color: #1eff00;}"); // uncommon
+            sb.AppendLine(".b3 {color: #0070dd;}"); // rare
+            sb.AppendLine(".b4 {color: #a335ee;}"); // unique
+            sb.AppendLine(".b5 {color: #ff8000;}"); // legendary
+            sb.AppendLine(".b6 {color: #e6cc80;}"); // artifact
+
+            sb.AppendLine(".b7 {color: #ffd100;}"); // gold - "text"
+            sb.AppendLine(".b8 {color: #ff0000;}"); // red - required
 
             sb.AppendLine(".c0 {color: #FF7D0A;}"); // druid color
             sb.AppendLine(".c1 {color: #ABD473;}"); // hunter color
