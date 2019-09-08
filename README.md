@@ -44,3 +44,6 @@ if you have any suggestion, send me some feedback
 ![discord-preview](https://raw.githubusercontent.com/ludakludi/DKP-Discord-Bot-WoW-Classic/master/auctionPrw.png)
 ---
 
+---
+![discord-preview](https://raw.githubusercontent.com/ludakludi/DKP-Discord-Bot-WoW-Classic/master/auctionPrw.png)
+---

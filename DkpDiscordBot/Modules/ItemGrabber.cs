@@ -153,17 +153,17 @@ namespace DkpDiscordBot.Modules
 
             for (int i = 1; i < list.Count; i++)
             {
-
+                // set white color to stats
                 string s = list[i].Trim();
-                if (s[0] == '+') // set white color to stats 
+                if (s[0] == '+')
                 {
                     sb.AppendLine($"<a class=\"b1\">{ list[i] }</a><br />");
                     continue;
                 }
 
-
                 if (list[i].Contains("Binds when picked up") || list[i].Contains("Binds when equipped") || list[i].Contains("Unique") ||
-                     list[i].Contains("Durability") || list[i].Contains("Block") || list[i].Contains("Requires Level")) // set white color to stats 
+                     list[i].Contains("Durability") || list[i].Contains("Block") || list[i].Contains("Armor")
+                     || list[i].Contains("Requires Level")) // set white color to stats 
                 {
                     sb.AppendLine($"<a class=\"b1\">{ list[i] }</a><br />");
                     continue;
@@ -237,6 +237,7 @@ namespace DkpDiscordBot.Modules
                     continue;
                 }
 
+                /*
                 if (list[i].Contains("Requires Level")) // set requires to red color
                 {
                     sb.AppendLine($"<a class=\"b1\">{ list[i] }</a><br />");
@@ -248,8 +249,10 @@ namespace DkpDiscordBot.Modules
                     sb.AppendLine($"<a class=\"b8\">{ list[i] }</a><br />");
                     continue;
                 }
+                */
 
-                if (Regex.IsMatch(list[i], "^\"(.+)\"$")) // if line have "" set text to golden color
+                // if line have on start and end "", set text to golden color
+                if (Regex.IsMatch(list[i], "^\"(.+)\"$"))
                 {
                     sb.AppendLine($"<a class=\"b7\">{ list[i] }</a><br />");
                     continue;
@@ -261,6 +264,7 @@ namespace DkpDiscordBot.Modules
                     var typeList = new List<string>()
                     {
                         "One-hand", "Main Hand",  "Two-hand", "Ranged", "Off Hand", "Chest", "Feet", "Hands", "Head", "Legs", "Shoulder", "Waist", "Wrist",
+                        "Relic"
                     };
                     foreach (var item in typeList)
                     {
@@ -285,6 +289,7 @@ namespace DkpDiscordBot.Modules
 
                 if (isSetItem)
                 {
+                    //first line is gold color 
                     if (list[i].Contains("(0/"))
                     {
                         sb.Replace(list[i - 1], "");
@@ -293,6 +298,7 @@ namespace DkpDiscordBot.Modules
                         continue;
                     }
 
+                    // list of set items
                     if (signalFirstSet == false)
                     {
                         sb.AppendLine($"<a class=\"b0\">{ "&nbsp;&nbsp;" + list[i] }</a><br />");
@@ -302,7 +308,7 @@ namespace DkpDiscordBot.Modules
 
 
 
-                // rest of text will be white color
+                // if exist rest of text will be white color
                 sb.AppendLine($"<a class=\"b1\">{ list[i] }</a><br />");
             }
 
