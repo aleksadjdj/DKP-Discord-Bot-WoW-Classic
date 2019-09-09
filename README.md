@@ -6,7 +6,7 @@ https://discordapp.com/developers/applications/
 Go to Bot settings (add bot) 
 
 Copy Client ID in General Inforamation  
-Replace CLIENT_ID in link belowe
+Replace CLIENT_ID in link belowe  
 https://discordapp.com/oauth2/authorize?client_id=CLIENT_ID&scope=bot&permissions=1  
 Select server  
 
